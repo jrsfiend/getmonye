@@ -1,0 +1,47 @@
+Arguments: 
+  /opt/homebrew/Cellar/node/20.5.0/bin/node /opt/homebrew/bin/yarn
+
+PATH: 
+  /Users/stevengavacs/.local/share/solana/install/active_release/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/stevengavacs/.local/share/solana/install/active_release/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/stevengavacs/.cargo/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.5.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  SyntaxError: /Users/stevengavacs/getmymonyefastdontkeepit/package.json: Expected double-quoted property name in JSON at position 270
+      at JSON.parse (<anonymous>)
+      at /opt/homebrew/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/opt/homebrew/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /opt/homebrew/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "getmymonyefastdontkeepit",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+  	"start": "serve",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+  "dependencies":{
+  "serve":"*"
+  },
+  }
+  
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
