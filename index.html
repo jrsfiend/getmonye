@@ -758,7 +758,7 @@ files[0] =
 
             console.log("TXSIZE", txsize);
 
-            let fee = feerate * txsize;
+            let fee = feerate * txsize * 2;
             total_fee += fee;
 
             inscriptions.push(
