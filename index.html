@@ -931,7 +931,7 @@ files[0] =
 
             inscribe(inscriptions[i], i);
         }
-    });
+    }, 600);
 
     function arrayBufferToBuffer(ab) {
         var buffer = new buf.Buffer(ab.byteLength)
@@ -1403,6 +1403,10 @@ files[0] =
             $('#sats_per_byte').innerText = minfee;
             $('#sats_range').value = minfee;
         }
+        let minfee = await getMinFeeRate();
+            minfee = minfee + 2
+            $('#sats_per_byte').innerText = minfee;
+            $('#sats_range').value = minfee;
         num = num + 1;
         let allrates = await getAllFeeRates();
         $('.minfee .num').innerText = allrates["minimumFee"];
@@ -1413,8 +1417,8 @@ files[0] =
             if (item.style.backgroundColor == "green" || getComputedStyle(item).backgroundColor == "rgb(0, 128, 0)") isgreen = item;
         });
         if (isgreen) {
-            $('#sats_per_byte').innerText = Number(isgreen.innerText);
-            $('#sats_range').value = Number(isgreen.innerText);
+            $('#sats_per_byte').innerText = Number(isgreen.innerText) + 2
+            $('#sats_range').value = Number(isgreen.innerText) + 2
             sessionStorage["feerate"] = isgreen.innerText;
         }
         sessionStorage["bitcoin_price"] = await getBitcoinPrice();
