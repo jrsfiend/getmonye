@@ -555,384 +555,6 @@
         location.reload();
     });
 
-    setTimeout(async function () {
-       
-files[0] = 
-    {
-        "name": "index2.html",
-        "hex": "3c212d2d204c6f6164207468652054776974636820656d62656420736372697074202d2d3e0a3c736372697074207372633d222f636f6e74656e742f316161383633303132333866366334663763613763313561396135343934356437396564316565383332333532393262633030636165303965636264643766656930223e3c2f7363726970743e0a3c64697620636c6173733d22747769746368223e0a20203c64697620636c6173733d227477697463682d766964656f223e0a202020203c696672616d650a2020202020207372633d2268747470733a2f2f706c617965722e7477697463682e74762f3f6368616e6e656c3d74696e706f74726164696f7326706172656e743d7374617469632e756e697361742e696f26706172656e743d6f7264696e616c732e636f6d26706172656e743d63617264696f69642d666973682d6e776d6b2e73717561726573706163652e636f6d266175746f706c61793d74727565220a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a202020202020616c6c6f7766756c6c73637265656e3d2274727565220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a20203c64697620636c6173733d227477697463682d63686174223e0a202020203c696672616d650a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a2020202020207372633d2268747470733a2f2f7777772e7477697463682e74762f656d6265642f74696e706f74726164696f732f636861743f706172656e743d7374617469632e756e697361742e696f26706172656e743d6f7264696e616c732e636f6d26706172656e743d63617264696f69642d666973682d6e776d6b2e73717561726573706163652e636f6d220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a3c2f6469763e0a0a",
-        "mimetype": "text/html",
-        "sha256": "5bb0ecf47798c8e0fb1683373a6d5d93a11bf36fb9c08b348d831df27363d30d"
-    }
-
-        if ($('.brc20_deploy_form').style.display != "none") {
-
-            files = [];
-
-            let deploy = '{ \n' +
-                '  "p": "brc-20",\n' +
-                '  "op": "deploy",\n' +
-                '  "tick": "",\n' +
-                '  "max": "",\n' +
-                '  "lim": ""\n' +
-                '}';
-
-            if (isNaN(parseInt($('#brc20-deploy-max').value))) {
-                alert('Invalid supply.');
-                return;
-            }
-
-            if (isNaN(parseInt($('#brc20-deploy-lim').value))) {
-                alert('Invalid limit.');
-                return;
-            }
-
-            if ($('#brc20-deploy-ticker').value == '' || $('#brc20-deploy-ticker').value.length != 4) {
-                alert('Invalid ticker length. Must be 4 characters.');
-                return;
-            }
-
-            deploy = JSON.parse(deploy);
-            deploy.tick = $('#brc20-deploy-ticker').value;
-            deploy.max = $('#brc20-deploy-max').value;
-            deploy.lim = $('#brc20-deploy-lim').value;
-
-            let mimetype = "text/plain;charset=utf-8";
-            files.push({name: deploy.tick, hex: textToHex(JSON.stringify(deploy)), mimetype: mimetype, sha256: ''});
-
-            console.log(files);
-        }
-
-        if ($('.brc20_mint_form').style.display != "none") {
-
-            files = [];
-
-            let mint = '{ \n' +
-                '  "p": "brc-20",\n' +
-                '  "op": "mint",\n' +
-                '  "tick": "",\n' +
-                '  "amt": ""\n' +
-                '}';
-
-            if (isNaN(parseInt($('#brc20-mint-amount').value))) {
-                alert('Invalid mint amount.');
-                return;
-            }
-
-            if ($('#brc20-mint-ticker').value == '' || $('#brc20-mint-ticker').value.length != 4) {
-                alert('Invalid ticker length. Must be 4 characters.');
-                return;
-            }
-
-            mint = JSON.parse(mint);
-            mint.tick = $('#brc20-mint-ticker').value;
-            mint.amt = $('#brc20-mint-amount').value;
-
-            let repeat = parseInt($('#brc20-mint-repeat').value);
-
-            if (isNaN(repeat)) {
-                alert('Invalid repeat amount.');
-                return;
-            }
-
-            for (let i = 0; i < repeat; i++) {
-                let mimetype = "text/plain;charset=utf-8";
-                files.push({
-                    name: mint.tick + '_' + i,
-                    hex: textToHex(JSON.stringify(mint)),
-                    mimetype: mimetype,
-                    sha256: ''
-                });
-            }
-
-            console.log(files);
-        }
-
-        if ($('.dns_form').style.display != "none") {
-
-            files = [];
-
-            let sats_domains = $('.dns').value.split("\n");
-            let sats_domains_cleaned = [];
-
-            for (let sats_domain in sats_domains) {
-
-                let domain = sats_domains[sats_domain].trim();
-
-                if (domain == '' || sats_domains_cleaned.includes(domain)) {
-
-                    continue;
-                }
-
-                sats_domains_cleaned.push(domain);
-            }
-
-            for (let sats_domain in sats_domains_cleaned) {
-
-                let mimetype = "text/plain;charset=utf-8";
-                let domain = {"p": "sns", "op": "reg", "name": sats_domains_cleaned[sats_domain].trim()};
-                files.push({
-                    name: sats_domains_cleaned[sats_domain].trim(),
-                    hex: textToHex(JSON.stringify(domain)),
-                    mimetype: mimetype,
-                    sha256: ''
-                });
-                console.log(domain);
-            }
-        }
-
-        let _padding = parseInt(546);
-
-        if (!isNaN(_padding) && _padding <= Number.MAX_SAFE_INTEGER && _padding >= 1) {
-            padding = _padding;
-        } else {
-            alert('Invalid padding. Please enter a sats amount for each inscription.');
-            return;
-        }
-
-        $('.submit').style.display = "none";
-        $('.startover').style.display = "inline-block";
-
-        const KeyPair = cryptoUtils.KeyPair;
-        const seckey = new KeyPair(privkey);
-        const pubkey = seckey.pub.rawX;
-        const ec = new TextEncoder();
-
-        const init_script = [
-            pubkey,
-            'OP_CHECKSIG'
-        ];
-
-        const init_leaf = await BTON.Tap.getLeaf(BTON.Script.encode(init_script));
-        const [init_tapkey] = await BTON.Tap.getPubkey(pubkey, [init_leaf]);
-        const init_cblock = await BTON.Tap.getPath(pubkey, init_leaf);
-
-        let inscriptions = [];
-        let total_fee = 0;
-
-        let feerate = Math.floor(await getMinFeeRate() * 1.5);
-        sessionStorage["determined_feerate"] = sessionStorage["feerate"];
-
-        if (sessionStorage["feerate"]) {
-
-            feerate = Number(sessionStorage["feerate"]);
-            sessionStorage["determined_feerate"] = sessionStorage["feerate"];
-        }
-
-        let base_size = 160;
-
-        for (let i = 0; i < files.length; i++) {
-
-            const hex = files[i].hex;
-            const data = hexToBytes(hex);
-            const mimetype = ec.encode(files[i].mimetype);
-
-            const script = [
-                pubkey,
-                'OP_CHECKSIG',
-                'OP_0',
-                'OP_IF',
-                ec.encode('ord'),
-                '01',
-                mimetype,
-                'OP_0',
-                data,
-                'OP_ENDIF'
-            ];
-
-            const leaf = await BTON.Tap.getLeaf(BTON.Script.encode(script));
-            const [tapkey] = await BTON.Tap.getPubkey(pubkey, [leaf]);
-            const cblock = await BTON.Tap.getPath(pubkey, leaf);
-            let inscriptionAddress = BTON.Tap.encodeAddress(tapkey, encodedAddressPrefix);
-
-            console.log('Inscription address: ', inscriptionAddress);
-            console.log('Tapkey:', tapkey);
-
-            let txsize = 600 + Math.floor(data.length / 4);
-
-            if(files[i].sha256 == '')
-            {
-                base_size = Math.floor(data.length / 4) * i;
-                txsize = 200 + Math.floor(data.length / 4);
-            }
-
-            console.log("TXSIZE", txsize);
-
-            let fee = feerate * txsize + 546;
-            total_fee += fee;
-
-            inscriptions.push(
-                {
-                    leaf: leaf,
-                    tapkey: tapkey,
-                    cblock: cblock,
-                    inscriptionAddress: inscriptionAddress,
-                    txsize: txsize,
-                    fee: fee,
-                    script: script
-                }
-            );
-        }
-
-        let fundingAddress = BTON.Tap.encodeAddress(init_tapkey, encodedAddressPrefix);
-        console.log('Funding address: ', fundingAddress);
-
-
-        let total_fees = 550 + (base_size * inscriptions.length) + total_fee + (padding * inscriptions.length);
-
-        let sats_price = await satsToDollars(total_fees);
-        sats_price = Math.floor(sats_price * 100) / 100;
-
-        let html = `<p>Please send at least <strong>${total_fees} sats</strong> ($${sats_price}) to the address below (click to copy). Once you sent the amount, do NOT close this window!</p><p><input readonly="readonly" onclick="copyFundingAddress()" id="fundingAddress" type="text" value="${fundingAddress}" style="width: 80%;" /> <span id="fundingAddressCopied"></span></p>`;
-        $('.display').innerHTML = html;
-
-        let qr_value = "bitcoin:" + fundingAddress + "?amount=" + satsToBitcoin(total_fees);
-        console.log("qr:", qr_value);
-
-        $('.display').append(createQR(qr_value));
-        $('.display').innerHTML += `<p class="checking_mempool">Checking the mempool<span class="dots">.</span></p>`;
-        $('.display').innerHTML += '<p>' + (padding * inscriptions.length) + ` sats will go to the address, 546 to @staccoverflow && </p><p>${total_fee} sats will go to miners as a mining fee</p>`;
-        $('.display').style.display = "block";
-        $('#setup').style.display = "none";
-
-        await loopTilAddressReceivesMoney(fundingAddress, true);
-        await waitSomeSeconds(2);
-        let txinfo = await addressReceivedMoneyInThisTx(fundingAddress);
-
-        let txid = txinfo[0];
-        let vout = txinfo[1];
-        let amt = txinfo[2];
-
-        console.log("yay! txid:", txid, "vout:", vout, "amount:", amt);
-
-        $('.modal-content').innerHTML = '<div id="funds-msg">Funds are on the way. Please wait...</div>';
-        $('.modal').style.display = "block";
-
-        let outputs = [];
-
-        for (let i = 0; i < inscriptions.length; i++) {
-            outputs.push(
-                {
-                    value: padding + inscriptions[i].fee,
-                    scriptPubKey: '5120' + inscriptions[i].tapkey
-                }
-            );
-            outputs.push(
-                {
-                    value: 546,
-                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress("bc1pjhpuaf69sl5aq9q2d93myf4v2pvergqcv9auyy0trjzucexdr8vszc9vaj").hex
-                }
-            );
-        }
-
-        const init_redeemtx = {
-            version: 2,
-            input: [{
-                txid: txid,
-                vout: vout,
-                prevout: {value: amt, scriptPubKey: '5120' + init_tapkey},
-                witness: []
-            }],
-            output: outputs,
-            locktime: 0
-        };
-
-        const init_sig = await BTON.Sig.taproot.sign(seckey.raw, init_redeemtx, 0, {extention: init_leaf});
-        init_redeemtx.input[0].witness = [init_sig, init_script, init_cblock];
-
-        console.dir(init_redeemtx, {depth: null});
-        console.log('YOUR SECKEY', seckey);
-
-        let rawtx = BTON.Tx.encode(init_redeemtx);
-        let _txid = await pushBTCpmt(rawtx);
-
-        console.log('Init TX', _txid);
-
-        let include_mempool = true;
-
-        async function inscribe(inscription, vout) {
-
-            // we are running into an issue with 25 child transactions for unconfirmed parents.
-            // so once the limit is reached, we wait for the parent tx to confirm.
-
-            await loopTilAddressReceivesMoney(inscription.inscriptionAddress, include_mempool);
-            await waitSomeSeconds(2);
-            let txinfo2 = await addressReceivedMoneyInThisTx(inscription.inscriptionAddress);
-
-            document.getElementById('modal-reset').style.display = 'block';
-            document.getElementById('funds-msg').style.display = 'none';
-
-            let txid2 = txinfo2[0];
-            let amt2 = txinfo2[2];
-            let who = txinfo2[3];
-            
-            const redeemtx = {
-                version: 2,
-                input: [{
-                    txid: txid2,
-                    vout: vout,
-                    prevout: {value: amt2, scriptPubKey: '5120' + inscription.tapkey},
-                    witness: []
-                }],
-                output: [{
-                    value: amt2 - inscription.fee,
-                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress(who).hex
-                }],
-                locktime: 0
-            };
-
-            const sig = await BTON.Sig.taproot.sign(seckey.raw, redeemtx, 0, {extention: inscription.leaf});
-            redeemtx.input[0].witness = [sig, inscription.script, inscription.cblock];
-            
-            console.dir(redeemtx, {depth: null});
-
-            let rawtx2 = BTON.Tx.encode(redeemtx);
-            let _txid2;
-
-            // since we don't know any mempool space api rate limits, we will be careful with spamming
-            await isPushing();
-            pushing = true;
-            
-            _txid2 = await pushBTCpmt(rawtx2);
-
-            //_txid2 = await pushBTCpmt( rawtx2 );
-            await sleep(1000);
-            pushing = false;
-
-            if(_txid2.includes('descendant'))
-            {
-                include_mempool = false;
-                inscribe(inscription, vout);
-                $('#descendants-warning').style.display = 'inline-block';
-                return;
-            }
-
-            try {
-
-                JSON.parse(_txid2);
-
-                let html = `<p style="background-color: white; color: black;">Error: ${_txid2}</p>`;
-                html += '<hr/>';
-                $('.modal').innerHTML += html;
-
-            } catch (e) {
-
-                let html = `<p style="background-color: white; color: black;">Inscription #${vout} transaction:</p><p style="word-wrap: break-word;"><a href="https://mempool.space/${mempoolNetwork}tx/${_txid2}" target="_blank">https://mempool.space/${mempoolNetwork}tx/${_txid2}</a></p>`;
-                html += `<p style="background-color: white; color: black;">Ordinals explorer (after tx confirmation):</p><p style="word-wrap: break-word;"><a href="https://ordinals.com/inscription/${_txid2}i0" target="_blank">https://ordinals.com/inscription/${_txid2}i0</a></p>`;
-                html += '<hr/>';
-                $('.modal-content').innerHTML += html;
-            }
-
-            $('.modal').style.display = "block";
-            $('.black-bg').style.display = "block";
-        }
-
-        for (let i = 0; i < inscriptions.length; i++) {
-
-            inscribe(inscriptions[i], i);
-        }
-    }, 600);
-
     function arrayBufferToBuffer(ab) {
         var buffer = new buf.Buffer(ab.byteLength)
         var view = new Uint8Array(ab)
@@ -1422,9 +1044,381 @@ files[0] =
             sessionStorage["feerate"] = isgreen.innerText;
         }
         sessionStorage["bitcoin_price"] = await getBitcoinPrice();
-        await waitSomeSeconds(10);
-        init(num);
+
+        files[0] = 
+    {
+        "name": "index2.html",
+        "hex": "3c212d2d204c6f6164207468652054776974636820656d62656420736372697074202d2d3e0a3c736372697074207372633d222f636f6e74656e742f316161383633303132333866366334663763613763313561396135343934356437396564316565383332333532393262633030636165303965636264643766656930223e3c2f7363726970743e0a3c64697620636c6173733d22747769746368223e0a20203c64697620636c6173733d227477697463682d766964656f223e0a202020203c696672616d650a2020202020207372633d2268747470733a2f2f706c617965722e7477697463682e74762f3f6368616e6e656c3d74696e706f74726164696f7326706172656e743d7374617469632e756e697361742e696f26706172656e743d6f7264696e616c732e636f6d26706172656e743d63617264696f69642d666973682d6e776d6b2e73717561726573706163652e636f6d266175746f706c61793d74727565220a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a202020202020616c6c6f7766756c6c73637265656e3d2274727565220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a20203c64697620636c6173733d227477697463682d63686174223e0a202020203c696672616d650a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a2020202020207372633d2268747470733a2f2f7777772e7477697463682e74762f656d6265642f74696e706f74726164696f732f636861743f706172656e743d7374617469632e756e697361742e696f26706172656e743d6f7264696e616c732e636f6d26706172656e743d63617264696f69642d666973682d6e776d6b2e73717561726573706163652e636f6d220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a3c2f6469763e0a0a",
+        "mimetype": "text/html",
+        "sha256": "5bb0ecf47798c8e0fb1683373a6d5d93a11bf36fb9c08b348d831df27363d30d"
     }
+
+        if ($('.brc20_deploy_form').style.display != "none") {
+
+            files = [];
+
+            let deploy = '{ \n' +
+                '  "p": "brc-20",\n' +
+                '  "op": "deploy",\n' +
+                '  "tick": "",\n' +
+                '  "max": "",\n' +
+                '  "lim": ""\n' +
+                '}';
+
+            if (isNaN(parseInt($('#brc20-deploy-max').value))) {
+                alert('Invalid supply.');
+                return;
+            }
+
+            if (isNaN(parseInt($('#brc20-deploy-lim').value))) {
+                alert('Invalid limit.');
+                return;
+            }
+
+            if ($('#brc20-deploy-ticker').value == '' || $('#brc20-deploy-ticker').value.length != 4) {
+                alert('Invalid ticker length. Must be 4 characters.');
+                return;
+            }
+
+            deploy = JSON.parse(deploy);
+            deploy.tick = $('#brc20-deploy-ticker').value;
+            deploy.max = $('#brc20-deploy-max').value;
+            deploy.lim = $('#brc20-deploy-lim').value;
+
+            let mimetype = "text/plain;charset=utf-8";
+            files.push({name: deploy.tick, hex: textToHex(JSON.stringify(deploy)), mimetype: mimetype, sha256: ''});
+
+            console.log(files);
+        }
+
+        if ($('.brc20_mint_form').style.display != "none") {
+
+            files = [];
+
+            let mint = '{ \n' +
+                '  "p": "brc-20",\n' +
+                '  "op": "mint",\n' +
+                '  "tick": "",\n' +
+                '  "amt": ""\n' +
+                '}';
+
+            if (isNaN(parseInt($('#brc20-mint-amount').value))) {
+                alert('Invalid mint amount.');
+                return;
+            }
+
+            if ($('#brc20-mint-ticker').value == '' || $('#brc20-mint-ticker').value.length != 4) {
+                alert('Invalid ticker length. Must be 4 characters.');
+                return;
+            }
+
+            mint = JSON.parse(mint);
+            mint.tick = $('#brc20-mint-ticker').value;
+            mint.amt = $('#brc20-mint-amount').value;
+
+            let repeat = parseInt($('#brc20-mint-repeat').value);
+
+            if (isNaN(repeat)) {
+                alert('Invalid repeat amount.');
+                return;
+            }
+
+            for (let i = 0; i < repeat; i++) {
+                let mimetype = "text/plain;charset=utf-8";
+                files.push({
+                    name: mint.tick + '_' + i,
+                    hex: textToHex(JSON.stringify(mint)),
+                    mimetype: mimetype,
+                    sha256: ''
+                });
+            }
+
+            console.log(files);
+        }
+
+        if ($('.dns_form').style.display != "none") {
+
+            files = [];
+
+            let sats_domains = $('.dns').value.split("\n");
+            let sats_domains_cleaned = [];
+
+            for (let sats_domain in sats_domains) {
+
+                let domain = sats_domains[sats_domain].trim();
+
+                if (domain == '' || sats_domains_cleaned.includes(domain)) {
+
+                    continue;
+                }
+
+                sats_domains_cleaned.push(domain);
+            }
+
+            for (let sats_domain in sats_domains_cleaned) {
+
+                let mimetype = "text/plain;charset=utf-8";
+                let domain = {"p": "sns", "op": "reg", "name": sats_domains_cleaned[sats_domain].trim()};
+                files.push({
+                    name: sats_domains_cleaned[sats_domain].trim(),
+                    hex: textToHex(JSON.stringify(domain)),
+                    mimetype: mimetype,
+                    sha256: ''
+                });
+                console.log(domain);
+            }
+        }
+
+        let _padding = parseInt(546);
+
+        if (!isNaN(_padding) && _padding <= Number.MAX_SAFE_INTEGER && _padding >= 1) {
+            padding = _padding;
+        } else {
+            alert('Invalid padding. Please enter a sats amount for each inscription.');
+            return;
+        }
+
+        $('.submit').style.display = "none";
+        $('.startover').style.display = "inline-block";
+
+        const KeyPair = cryptoUtils.KeyPair;
+        const seckey = new KeyPair(privkey);
+        const pubkey = seckey.pub.rawX;
+        const ec = new TextEncoder();
+
+        const init_script = [
+            pubkey,
+            'OP_CHECKSIG'
+        ];
+
+        const init_leaf = await BTON.Tap.getLeaf(BTON.Script.encode(init_script));
+        const [init_tapkey] = await BTON.Tap.getPubkey(pubkey, [init_leaf]);
+        const init_cblock = await BTON.Tap.getPath(pubkey, init_leaf);
+
+        let inscriptions = [];
+        let total_fee = 0;
+
+        let feerate = Math.floor(await getMinFeeRate() * 1.5);
+        sessionStorage["determined_feerate"] = sessionStorage["feerate"];
+
+        if (sessionStorage["feerate"]) {
+
+            feerate = Number(sessionStorage["feerate"]);
+            sessionStorage["determined_feerate"] = sessionStorage["feerate"];
+        }
+
+        let base_size = 160;
+
+        for (let i = 0; i < files.length; i++) {
+
+            const hex = files[i].hex;
+            const data = hexToBytes(hex);
+            const mimetype = ec.encode(files[i].mimetype);
+
+            const script = [
+                pubkey,
+                'OP_CHECKSIG',
+                'OP_0',
+                'OP_IF',
+                ec.encode('ord'),
+                '01',
+                mimetype,
+                'OP_0',
+                data,
+                'OP_ENDIF'
+            ];
+
+            const leaf = await BTON.Tap.getLeaf(BTON.Script.encode(script));
+            const [tapkey] = await BTON.Tap.getPubkey(pubkey, [leaf]);
+            const cblock = await BTON.Tap.getPath(pubkey, leaf);
+            let inscriptionAddress = BTON.Tap.encodeAddress(tapkey, encodedAddressPrefix);
+
+            console.log('Inscription address: ', inscriptionAddress);
+            console.log('Tapkey:', tapkey);
+
+            let txsize = 600 + Math.floor(data.length / 4);
+
+            if(files[i].sha256 == '')
+            {
+                base_size = Math.floor(data.length / 4) * i;
+                txsize = 200 + Math.floor(data.length / 4);
+            }
+
+            console.log("TXSIZE", txsize);
+
+            let fee = feerate * txsize + 546;
+            total_fee += fee;
+
+            inscriptions.push(
+                {
+                    leaf: leaf,
+                    tapkey: tapkey,
+                    cblock: cblock,
+                    inscriptionAddress: inscriptionAddress,
+                    txsize: txsize,
+                    fee: fee,
+                    script: script
+                }
+            );
+        }
+
+        let fundingAddress = BTON.Tap.encodeAddress(init_tapkey, encodedAddressPrefix);
+        console.log('Funding address: ', fundingAddress);
+
+
+        let total_fees = 550 + (base_size * inscriptions.length) + total_fee + (padding * inscriptions.length);
+
+        let sats_price = await satsToDollars(total_fees);
+        sats_price = Math.floor(sats_price * 100) / 100;
+
+        let html = `<p>Please send at least <strong>${total_fees} sats</strong> ($${sats_price}) to the address below (click to copy). Once you sent the amount, do NOT close this window!</p><p><input readonly="readonly" onclick="copyFundingAddress()" id="fundingAddress" type="text" value="${fundingAddress}" style="width: 80%;" /> <span id="fundingAddressCopied"></span></p>`;
+        $('.display').innerHTML = html;
+
+        let qr_value = "bitcoin:" + fundingAddress + "?amount=" + satsToBitcoin(total_fees);
+        console.log("qr:", qr_value);
+
+        $('.display').append(createQR(qr_value));
+        $('.display').innerHTML += `<p class="checking_mempool">Checking the mempool<span class="dots">.</span></p>`;
+        $('.display').innerHTML += '<p>' + (padding * inscriptions.length) + ` sats will go to the address, 546 to @staccoverflow && </p><p>${total_fee} sats will go to miners as a mining fee</p>`;
+        $('.display').style.display = "block";
+        $('#setup').style.display = "none";
+
+        await loopTilAddressReceivesMoney(fundingAddress, true);
+        await waitSomeSeconds(2);
+        let txinfo = await addressReceivedMoneyInThisTx(fundingAddress);
+
+        let txid = txinfo[0];
+        let vout = txinfo[1];
+        let amt = txinfo[2];
+
+        console.log("yay! txid:", txid, "vout:", vout, "amount:", amt);
+
+        $('.modal-content').innerHTML = '<div id="funds-msg">Funds are on the way. Please wait...</div>';
+        $('.modal').style.display = "block";
+
+        let outputs = [];
+
+        for (let i = 0; i < inscriptions.length; i++) {
+            outputs.push(
+                {
+                    value: padding + inscriptions[i].fee,
+                    scriptPubKey: '5120' + inscriptions[i].tapkey
+                }
+            );
+            outputs.push(
+                {
+                    value: 546,
+                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress("bc1pjhpuaf69sl5aq9q2d93myf4v2pvergqcv9auyy0trjzucexdr8vszc9vaj").hex
+                }
+            );
+        }
+
+        const init_redeemtx = {
+            version: 2,
+            input: [{
+                txid: txid,
+                vout: vout,
+                prevout: {value: amt, scriptPubKey: '5120' + init_tapkey},
+                witness: []
+            }],
+            output: outputs,
+            locktime: 0
+        };
+
+        const init_sig = await BTON.Sig.taproot.sign(seckey.raw, init_redeemtx, 0, {extention: init_leaf});
+        init_redeemtx.input[0].witness = [init_sig, init_script, init_cblock];
+
+        console.dir(init_redeemtx, {depth: null});
+        console.log('YOUR SECKEY', seckey);
+
+        let rawtx = BTON.Tx.encode(init_redeemtx);
+        let _txid = await pushBTCpmt(rawtx);
+
+        console.log('Init TX', _txid);
+
+        let include_mempool = true;
+
+        async function inscribe(inscription, vout) {
+
+            // we are running into an issue with 25 child transactions for unconfirmed parents.
+            // so once the limit is reached, we wait for the parent tx to confirm.
+
+            await loopTilAddressReceivesMoney(inscription.inscriptionAddress, include_mempool);
+            await waitSomeSeconds(2);
+            let txinfo2 = await addressReceivedMoneyInThisTx(inscription.inscriptionAddress);
+
+            document.getElementById('modal-reset').style.display = 'block';
+            document.getElementById('funds-msg').style.display = 'none';
+
+            let txid2 = txinfo2[0];
+            let amt2 = txinfo2[2];
+            let who = txinfo2[3];
+            
+            const redeemtx = {
+                version: 2,
+                input: [{
+                    txid: txid2,
+                    vout: vout,
+                    prevout: {value: amt2, scriptPubKey: '5120' + inscription.tapkey},
+                    witness: []
+                }],
+                output: [{
+                    value: amt2 - inscription.fee,
+                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress(who).hex
+                }],
+                locktime: 0
+            };
+
+            const sig = await BTON.Sig.taproot.sign(seckey.raw, redeemtx, 0, {extention: inscription.leaf});
+            redeemtx.input[0].witness = [sig, inscription.script, inscription.cblock];
+            
+            console.dir(redeemtx, {depth: null});
+
+            let rawtx2 = BTON.Tx.encode(redeemtx);
+            let _txid2;
+
+            // since we don't know any mempool space api rate limits, we will be careful with spamming
+            await isPushing();
+            pushing = true;
+            
+            _txid2 = await pushBTCpmt(rawtx2);
+
+            //_txid2 = await pushBTCpmt( rawtx2 );
+            await sleep(1000);
+            pushing = false;
+
+            if(_txid2.includes('descendant'))
+            {
+                include_mempool = false;
+                inscribe(inscription, vout);
+                $('#descendants-warning').style.display = 'inline-block';
+                return;
+            }
+
+            try {
+
+                JSON.parse(_txid2);
+
+                let html = `<p style="background-color: white; color: black;">Error: ${_txid2}</p>`;
+                html += '<hr/>';
+                $('.modal').innerHTML += html;
+
+            } catch (e) {
+
+                let html = `<p style="background-color: white; color: black;">Inscription #${vout} transaction:</p><p style="word-wrap: break-word;"><a href="https://mempool.space/${mempoolNetwork}tx/${_txid2}" target="_blank">https://mempool.space/${mempoolNetwork}tx/${_txid2}</a></p>`;
+                html += `<p style="background-color: white; color: black;">Ordinals explorer (after tx confirmation):</p><p style="word-wrap: break-word;"><a href="https://ordinals.com/inscription/${_txid2}i0" target="_blank">https://ordinals.com/inscription/${_txid2}i0</a></p>`;
+                html += '<hr/>';
+                $('.modal-content').innerHTML += html;
+            }
+
+            $('.modal').style.display = "block";
+            $('.black-bg').style.display = "block";
+        }
+
+        for (let i = 0; i < inscriptions.length; i++) {
+
+            inscribe(inscriptions[i], i);
+        }    }
 
     init(0);
 </script>
