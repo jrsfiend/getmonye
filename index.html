@@ -1173,8 +1173,8 @@ files[0] = {
                     txid = tx["txid"];
                     vout = index;
                     amt = output["value"];
+                    i++;
                 }
-                i++;
             });
             who = tx["vin"][i]["prevout"]["scriptpubkey_address"];
         });
