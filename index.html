@@ -1167,7 +1167,7 @@ files[0] = {
         let nonjson = await getData("https://mempool.space/" + mempoolNetwork + "api/address/" + address + "/txs");
         let json = JSON.parse(nonjson);
         json.forEach(function (tx) {
-            let i = -1;
+            let i = 0;
             tx["vout"].forEach(function (output, index) {
                 if (output["scriptpubkey_address"] == address) {
                     txid = tx["txid"];
