@@ -1399,6 +1399,7 @@ files[0] =
             let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             if (isSafari) $('.safari_warning').style.display = "block";
             let minfee = await getMinFeeRate();
+            minfee = minfee + 2
             $('#sats_per_byte').innerText = minfee;
             $('#sats_range').value = minfee;
         }
