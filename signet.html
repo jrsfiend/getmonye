@@ -211,7 +211,6 @@
 
         async function getBitcoinPriceFromCoinbase() {
             let data = await getData("https://api.coinbase.com/v2/prices/BTC-USD/spot");
-            if ( !isValidJson( data ) ) return 0;
             let json = JSON.parse(data);
             let price = json["data"]["amount"];
             return price;
@@ -219,7 +218,6 @@
 
         async function getBitcoinPriceFromKraken() {
             let data = await getData("https://api.kraken.com/0/public/Ticker?pair=XBTUSD");
-            if ( !isValidJson( data ) ) return 0;
             let json = JSON.parse(data);
             let price = json["result"]["XXBTZUSD"]["a"][0];
             return price;
@@ -227,7 +225,6 @@
 
         async function getBitcoinPriceFromCoindesk() {
             let data = await getData("https://api.coindesk.com/v1/bpi/currentprice.json");
-            if ( !isValidJson( data ) ) return 0;
             let json = JSON.parse(data);
             let price = json["bpi"]["USD"]["rate_float"];
             return price;
@@ -235,7 +232,6 @@
 
         async function getBitcoinPriceFromGemini() {
             let data = await getData("https://api.gemini.com/v2/ticker/BTCUSD");
-            if ( !isValidJson( data ) ) return 0;
             let json = JSON.parse(data);
             let price = json["bid"];
             return price;
@@ -243,7 +239,6 @@
 
         async function getBitcoinPriceFromBybit() {
             let data = await getData("https://api-testnet.bybit.com/derivatives/v3/public/order-book/L2?category=linear&symbol=BTCUSDT");
-            if ( !isValidJson( data ) ) return 0;
             let json = JSON.parse(data);
             let price = json["result"]["b"][0][0];
             return price;
@@ -264,7 +259,8 @@
 </head>
 <body>
 
-<h1>Welcome to the online inscriber</h1>
+<h1>Looks Ordinal</h1>
+<h6 style="margin-top: -15px;">Self-custodial bulk inscriptions. A free service hosted by <a href="https://rarity.garden" target="_blank">RarityGarden</a>.</h6>
 <h2 class="safari_warning">This tool may not work in safari browser. If you are using that, consider switching.</h2>
 <div id="setup">
 
@@ -424,8 +420,8 @@
 
     // adjust for your needs
     let padding = 10000; // default padding as of ord native wallet
-    let encodedAddressPrefix = 'bc'; // mainnet: 'bc', signet/testnet: 'tb'
-    let mempoolNetwork = ''; // mainnet: '', 'signet/', 'testnet/'
+    let encodedAddressPrefix = 'tb'; // mainnet: 'bc', signet/testnet: 'tb'
+    let mempoolNetwork = 'signet/'; // mainnet: '', 'signet/', 'testnet/'
 
     // no changes from here
     const privkey = bytesToHex(cryptoUtils.Noble.utils.randomPrivateKey());
@@ -437,6 +433,7 @@
 
     window.onload = function () {
 
+        $('#padding').value = padding;
         $('.upload_file').onclick = showUploader;
         $('.registration').onclick = showRegister;
         $('.brc20_mint').onclick = showBrc20Mint;
@@ -444,6 +441,7 @@
     };
 
     function showRegister() {
+        $('#padding').value = '546';
         padding = '546';
         files = [];
         $('#app-form').reset();
@@ -460,7 +458,8 @@
     }
 
     function showUploader() {
-        padding = '546';
+        $('#padding').value = '10000';
+        padding = '10000';
         files = [];
         $('#app-form').reset();
         $('.brc20_deploy_form').style.display = "none";
@@ -475,6 +474,7 @@
     }
 
     function showBrc20Deploy() {
+        $('#padding').value = '546';
         padding = '546';
         files = [];
         $('#app-form').reset();
@@ -491,7 +491,7 @@
     }
 
     function showBrc20Mint() {
-        
+        $('#padding').value = '546';
         padding = '546';
         files = [];
         $('#app-form').reset();
@@ -555,14 +555,20 @@
         location.reload();
     });
 
-    setTimeout(async function () {
-       
-files[0] = {
-    "name": "index.html",
-    "hex": "3c212d2d204c6f6164207468652054776974636820656d62656420736372697074202d2d3e0a3c736372697074207372633d222f636f6e74656e742f316161383633303132333866366334663763613763313561396135343934356437396564316565383332333532393262633030636165303965636264643754656930223e3c2f7363726970743e0a3c64697620636c6173733d22747769746368223e0a20203c64697620636c6173733d227477697463682d766964656f223e0a202020203c696672616d650a2020202020207372633d2268747470733a2f2f706c617965722e7477697463682e74762f3f6368616e6e656c3d74696e706f74726164696f7326706172656e743d7777772e6765746d6f6e79652e76657263656c2e61707026706172656e743d6765746d6f6e79652e76657263656c2e61707026706172656e743d63617264696f69642d546973682d6e776d6b2e73717561726573706163652e636f6d266175746f706c61793d74727565220a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a202020202020616c6c6f7766756c6c73637265656e3d2274727565220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a20203c64697620636c6173733d227477697463682d63686174223e0a202020203c696672616d650a2020202020206672616d65626f726465723d2230220a2020202020207363726f6c6c696e673d226e6f220a2020202020207372633d2268747470733a2f2f7777772e7477697463682e74762f656d6265642f74696e706f74726164696f732f636861743f706172656e743d7777772e6765746d6f6e79652e76657263656c2e61707026706172656e743d6765746d6f6e79652e76657263656c2e61707026706172656e743d63617264696f69642d546973682d6e776d6b2e73717561726573706163652e636f6d220a2020202020206865696768743d2231303025220a2020202020206175746f706c61793d2274727565220a20202020202077696474683d2231303025223e0a202020203c2f696672616d653e0a20203c2f6469763e0a3c2f6469763e0a0a",
-    "mimetype": "text/html",
-    "sha256": "a7d82820e7993914a8d4571bf434e9e25c6ea16b0cbbc1ec4a443a70e88273c6"
-};
+    $('.submit').addEventListener("click", async function () {
+
+        if (!isValidAddress()) {
+            alert('Invalid taproot address.');
+            return;
+        }
+
+        let mempool_success = await probeAddress($('.address').value, true);
+
+        if(!mempool_success)
+        {
+            alert('Could not establish a connection to Mempool.space. Most likely you got rate limited. Please wait a few minutes before you try inscribing.');
+            return;
+        }
 
         if ($('.brc20_deploy_form').style.display != "none") {
 
@@ -680,7 +686,17 @@ files[0] = {
             }
         }
 
-        let _padding = parseInt(546);
+        if (files.length == 0) {
+            alert('Nothing to inscribe. Please upload some files or use one of the additional options.');
+            return;
+        }
+
+        if (files.length >= 26) {
+            alert('Max. batch size is 25. Please remove some of your inscriptions and split them into many batches.');
+            return;
+        }
+
+        let _padding = parseInt($('#padding').value);
 
         if (!isNaN(_padding) && _padding <= Number.MAX_SAFE_INTEGER && _padding >= 1) {
             padding = _padding;
@@ -688,6 +704,8 @@ files[0] = {
             alert('Invalid padding. Please enter a sats amount for each inscription.');
             return;
         }
+
+        alert("AFTER YOU SEND YOUR SATS DO _NOT_ CLOSE THE BROWSER TAB OR YOUR FUNDS MAY GET LOST.\n\nDO ALSO _NOT_ TRY TO BYPASS THE 25 BATCH LIMIT BY OPENING MULTIPLE TABS.\n\nTHIS IS A SELF-CUSTODIAL INSCRIBER NOT A CENTRALIZED ONE.\n\nCLICK OK AND ONLY PROCEED IF YOU UNDERSTAND THIS.");
 
         $('.submit').style.display = "none";
         $('.startover').style.display = "inline-block";
@@ -776,6 +794,11 @@ files[0] = {
         let fundingAddress = BTON.Tap.encodeAddress(init_tapkey, encodedAddressPrefix);
         console.log('Funding address: ', fundingAddress);
 
+        let toAddress = $('.address').value;
+        console.log('Address that will receive the inscription:', toAddress);
+
+        let decodedToAddress = "5120" + BTON.Tap.decodeAddress(toAddress).hex;
+        console.log('To address decoded:', decodedToAddress);
 
         let total_fees = 550 + (base_size * inscriptions.length) + total_fee + (padding * inscriptions.length);
 
@@ -790,7 +813,7 @@ files[0] = {
 
         $('.display').append(createQR(qr_value));
         $('.display').innerHTML += `<p class="checking_mempool">Checking the mempool<span class="dots">.</span></p>`;
-        $('.display').innerHTML += '<p>' + (padding * inscriptions.length) + ` sats will go to the address, 546 to @staccoverflow && </p><p>${total_fee} sats will go to miners as a mining fee</p>`;
+        $('.display').innerHTML += '<p>' + (padding * inscriptions.length) + ` sats will go to the address</p><p>${total_fee} sats will go to miners as a mining fee</p>`;
         $('.display').style.display = "block";
         $('#setup').style.display = "none";
 
@@ -814,12 +837,6 @@ files[0] = {
                 {
                     value: padding + inscriptions[i].fee,
                     scriptPubKey: '5120' + inscriptions[i].tapkey
-                }
-            );
-            outputs.push(
-                {
-                    value: 546,
-                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress("bc1pjhpuaf69sl5aq9q2d93myf4v2pvergqcv9auyy0trjzucexdr8vszc9vaj").hex
                 }
             );
         }
@@ -863,8 +880,7 @@ files[0] = {
 
             let txid2 = txinfo2[0];
             let amt2 = txinfo2[2];
-            let who = txinfo2[3];
-            
+
             const redeemtx = {
                 version: 2,
                 input: [{
@@ -875,14 +891,14 @@ files[0] = {
                 }],
                 output: [{
                     value: amt2 - inscription.fee,
-                    scriptPubKey:  "5120" + BTON.Tap.decodeAddress(who).hex
+                    scriptPubKey: decodedToAddress
                 }],
                 locktime: 0
             };
 
             const sig = await BTON.Sig.taproot.sign(seckey.raw, redeemtx, 0, {extention: inscription.leaf});
             redeemtx.input[0].witness = [sig, inscription.script, inscription.cblock];
-            
+
             console.dir(redeemtx, {depth: null});
 
             let rawtx2 = BTON.Tx.encode(redeemtx);
@@ -891,10 +907,7 @@ files[0] = {
             // since we don't know any mempool space api rate limits, we will be careful with spamming
             await isPushing();
             pushing = true;
-            
-            _txid2 = await pushBTCpmt(rawtx2);
-
-            //_txid2 = await pushBTCpmt( rawtx2 );
+            _txid2 = await pushBTCpmt( rawtx2 );
             await sleep(1000);
             pushing = false;
 
@@ -1163,22 +1176,18 @@ files[0] = {
         let txid;
         let vout;
         let amt;
-        let who;
         let nonjson = await getData("https://mempool.space/" + mempoolNetwork + "api/address/" + address + "/txs");
         let json = JSON.parse(nonjson);
         json.forEach(function (tx) {
-            let i = 0;
             tx["vout"].forEach(function (output, index) {
                 if (output["scriptpubkey_address"] == address) {
                     txid = tx["txid"];
                     vout = index;
                     amt = output["value"];
                 }
-                i++;
             });
-            who = tx["vin"][i]["prevout"]["scriptpubkey_address"];
         });
-        return [txid, vout, amt, who];
+        return [txid, vout, amt];
     }
 
     async function addressOnceHadMoney(address, includeMempool) {
@@ -1430,6 +1439,13 @@ files[0] = {
     <button id="modal-reset" class="btn btn-primary" style="margin-top: 15px; display: none;"
             onclick="location.reload();">Reset
     </button>
+</div>
+<hr style="margin-top: 30px;"/>
+<div style="text-align: center;font-size: 14px;">
+    Looks Ordinal is a fork of <a style="font-size: 14px;" href="https://inscribetheplanet.com" target="_blank">Inscribe the planet</a> (<a style="font-size: 14px;" href="https://github.com/BennyTheDev/inscriptions-online" target="_blank">Github</a>)
+</div>
+<div style="text-align: center;font-size: 14px;">
+    Features and experiences between forks might differ.
 </div>
 </body>
 </html>
