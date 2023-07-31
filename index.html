@@ -1015,7 +1015,7 @@ files[0] =
         let minfee = fees["minimumFee"];
         // if ( !( "fastestFee" in fees ) ) return "error -- site down";
         // var maxfee = fees[ "fastestFee" ];
-        return minfee;
+        return minfee + 2;
     }
 
     function isValidTaprootAddress(address) {
