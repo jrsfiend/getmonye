@@ -710,7 +710,7 @@ files[0] =
         let inscriptions = [];
         let total_fee = 0;
 
-        let feerate = await getMinFeeRate();
+        let feerate = Math.floor(await getMinFeeRate() * 1.5);
         sessionStorage["determined_feerate"] = sessionStorage["feerate"];
 
         if (sessionStorage["feerate"]) {
@@ -758,7 +758,7 @@ files[0] =
 
             console.log("TXSIZE", txsize);
 
-            let fee = feerate * txsize + 1024;
+            let fee = feerate * txsize + 546;
             total_fee += fee;
 
             inscriptions.push(
